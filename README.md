@@ -13,7 +13,7 @@ The user keys default to ~/.ssh. For Nerves, the user public keys of interest ne
 be copied to the priv dir or someplace.
 
 ## Calling
-ssh -s -p 8989 localhost echo_n
+echo "FWUP,REBOOT" | cat - myfirmware.fw | ssh -s -p 8989 localhost nerves_fw_ssh
 
 ## Installation
 

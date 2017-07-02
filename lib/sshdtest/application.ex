@@ -14,7 +14,7 @@ defmodule Sshdtest.Application do
       # worker(Sshdtest.Worker, [arg1, arg2, arg3]),
     ]
 
-    :ssh.daemon(8989, [{:system_dir, :code.priv_dir(:sshdtest)}, {:subsystems, [{'echo_n', {Sshdtest.Echo, [10]}}]}])
+    :ssh.daemon(8989, [{:system_dir, :code.priv_dir(:sshdtest)}, {:subsystems, [{'nerves_fw_ssh', {Sshdtest.Echo, []}}]}])
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
