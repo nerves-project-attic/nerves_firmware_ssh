@@ -25,7 +25,7 @@ defmodule Nerves.Firmware.SSH.Handler do
     {:ok, %{state | id: channel_id, cm: connection_manager}}
   end
 
-  def handle_ssh_msg({:ssh_cm, cm, {:data, _channel_id, 0, data}}, state) do
+  def handle_ssh_msg({:ssh_cm, _cm, {:data, _channel_id, 0, data}}, state) do
     process_message(state.state, data, state)
   end
   def handle_ssh_msg({:ssh_cm, _cm, {:data, _channel_id, 1, _data}}, state) do
