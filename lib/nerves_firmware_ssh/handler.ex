@@ -119,12 +119,16 @@ defmodule Nerves.Firmware.SSH.Handler do
     end
   end
   defp run_commands([:reboot | rest], data, state) do
-    Logger.debug("Running reboot command")
+    Logger.debug("Initiating reboot...")
+    :ssh_connection.send(state.cm, state.id, "Rebooting...\n")
+    Nerves.Runtime.reboot()
+
     new_state = %{state | commands: rest}
     run_commands(rest, data, new_state)
   end
 
   defp maybe_fwup(%{fwup: fwup} = state) when fwup == nil do
+    :ssh_connection.send(state.cm, state.id, "Running fwup...\n")
     {:ok, new_fwup} = Fwup.start_link(self())
     %{state | fwup: new_fwup}
   end
