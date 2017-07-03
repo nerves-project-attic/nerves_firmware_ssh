@@ -15,9 +15,12 @@ defmodule Nerves.Firmware.SSH.Fwup do
 
   def init([cm]) do
     fwup = System.find_executable("fwup")
+    devpath = Nerves.Runtime.KV.get("nerves_fw_devpath") || "/dev/mmcblk0"
+    task = "upgrade"
+
     port = Port.open({:spawn_executable, fwup},
-      [{:args, ["--apply", "--no-unmount", "-d", "/tmp/foo",
-                "--task", "complete"]},
+      [{:args, ["--apply", "--no-unmount", "-d", devpath,
+                "--task", task]},
        :use_stdio,
        :binary,
        :exit_status
