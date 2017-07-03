@@ -1,5 +1,5 @@
-defmodule Sshdtest.Echo do
-  alias Sshdtest.Command
+defmodule Nerves.Firmware.SSH.Handler do
+  alias Nerves.Firmware.SSH.Command
 
   defmodule State do
     defstruct state: :parse_commands,

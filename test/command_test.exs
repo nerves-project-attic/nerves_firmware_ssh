@@ -1,19 +1,20 @@
 defmodule CommandTest do
   use ExUnit.Case
+  alias Nerves.Firmware.SSH.Command
 
   test "that the fwup command parses" do
-    assert Sshdtest.Command.parse("fwup:100\nleftovers") == {:ok, [{:fwup, 100}], "leftovers"}
+    assert Command.parse("fwup:100\nleftovers") == {:ok, [{:fwup, 100}], "leftovers"}
   end
   test "that the reboot command parses" do
-    assert Sshdtest.Command.parse("reboot\nleftovers") == {:ok, [:reboot], "leftovers"}
+    assert Command.parse("reboot\nleftovers") == {:ok, [:reboot], "leftovers"}
   end
 
   test "that multiple commands parse" do
-    assert Sshdtest.Command.parse("fwup:123,reboot\nleftovers") == {:ok, [{:fwup, 123}, :reboot], "leftovers"}
+    assert Command.parse("fwup:123,reboot\nleftovers") == {:ok, [{:fwup, 123}, :reboot], "leftovers"}
   end
 
   test "partial data is detected" do
-    assert Sshdtest.Command.parse("fwup") == {:error, :partial}
+    assert Command.parse("fwup") == {:error, :partial}
   end
 
 end

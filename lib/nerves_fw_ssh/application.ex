@@ -1,4 +1,4 @@
-defmodule Sshdtest.Application do
+defmodule Nerves.Firmware.SSH.Application do
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -14,11 +14,11 @@ defmodule Sshdtest.Application do
       # worker(Sshdtest.Worker, [arg1, arg2, arg3]),
     ]
 
-    :ssh.daemon(8989, [{:system_dir, :code.priv_dir(:sshdtest)}, {:subsystems, [{'nerves_fw_ssh', {Sshdtest.Echo, []}}]}])
+    :ssh.daemon(8989, [{:system_dir, :code.priv_dir(:sshdtest)}, {:subsystems, [{'nerves_fw_ssh', {Nerves.Firmware.SSH.Handler, []}}]}])
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Sshdtest.Supervisor]
+    opts = [strategy: :one_for_one, name: Nerves.Firmware.SSH.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

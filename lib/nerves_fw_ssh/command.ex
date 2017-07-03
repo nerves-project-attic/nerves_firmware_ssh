@@ -1,4 +1,4 @@
-defmodule Sshdtest.Command do
+defmodule Nerves.Firmware.SSH.Command do
 
   @doc """
   Parse a command string.
