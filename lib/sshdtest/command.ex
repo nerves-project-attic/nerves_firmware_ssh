@@ -24,7 +24,6 @@ defmodule Sshdtest.Command do
     |> Enum.map(&parse_command/1)
   end
 
-  def parse_command("FWUP"), do: :fwup
-  def parse_command("REBOOT"), do: :reboot
-  def parse_command(other), do: {:unknown, other}
+  def parse_command(<<"fwup:", filesize::binary>>), do: {:fwup, String.to_integer(filesize)}
+  def parse_command("reboot"), do: :reboot
 end

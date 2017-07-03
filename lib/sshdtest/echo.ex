@@ -3,10 +3,11 @@ defmodule Sshdtest.Echo do
 
   defmodule State do
     defstruct state: :parse_commands,
-            commands: [],
-            buffer: <<>>,
-            id: nil,
-            cm: nil
+      id: nil,
+      cm: nil,
+      commands: [],
+      buffer: <<>>,
+      bytes_processed: 0
   end
 
   # See http://erlang.org/doc/man/ssh_channel.html for API
@@ -24,7 +25,7 @@ defmodule Sshdtest.Echo do
     process_message(state.state, data, state)
   end
   def handle_ssh_msg({:ssh_cm, _cm, {:data, _channel_id, 1, _data}}, state) do
-    # Ignore data?
+    # Ignore stderr
     {:ok, state}
   end
   def handle_ssh_msg({:ssh_cm, _cm, {:eof, _channel_id}}, state) do
@@ -35,13 +36,18 @@ defmodule Sshdtest.Echo do
     {:ok, state}
   end
   def handle_ssh_msg({:ssh_cm, _cm, {:exit_signal, channel_id, _, _error, _}}, state) do
+    IO.puts("exit_signal")
     {:stop, channel_id, state}
   end
   def handle_ssh_msg({:ssh_cm, _cm, {:exit_status, channel_id, _status}}, state) do
+    IO.puts("exit_status")
     {:stop, channel_id, state}
   end
 
-  def terminate(_reason, _state), do: :ok
+  def terminate(_reason, _state) do
+    IO.puts("terminate")
+    :ok
+  end
 
   defp process_message(:parse_commands, data, state) do
     alldata = state.buffer <> data
@@ -60,7 +66,8 @@ defmodule Sshdtest.Echo do
   defp process_message(:running_commands, data, state) do
     IO.puts("process_message: #{inspect state.commands}")
     alldata = state.buffer <> data
-    run_commands(state.command_list, alldata, state)
+    new_state = %{state | buffer: <<>>}
+    run_commands(state.commands, alldata, new_state)
   end
 
   defp run_commands([], _data, state) do
@@ -68,13 +75,24 @@ defmodule Sshdtest.Echo do
     :ssh_connection.send_eof(state.cm, state.id)
     {:stop, state.id, state}
   end
-  defp run_commands([:fwup | rest], data, state) do
-    IO.puts("Running fwup command with #{byte_size(data)} bytes of data")
-    {:ok, %{state | buffer: <<>>, commands: rest}}
+  defp run_commands([{:fwup, count} | rest], data, state) do
+    bytes_left = count - state.bytes_processed
+    bytes_to_process = min(bytes_left, byte_size(data))
+    <<for_fwup::binary-size(bytes_to_process), leftover::binary>> = data
+    IO.puts("Running fwup command with #{bytes_to_process} bytes of data")
+    new_bytes_processed = state.bytes_processed + bytes_to_process
+    if new_bytes_processed == count do
+      new_state = %{state | commands: rest, bytes_processed: 0}
+      run_commands(rest, leftover, new_state)
+    else
+      new_state = %{state | bytes_processed: new_bytes_processed}
+      {:ok, new_state}
+    end
   end
   defp run_commands([:reboot | rest], data, state) do
-    IO.puts("Running reboot command with #{byte_size(data)} bytes of data")
-    {:ok, %{state | buffer: <<>>, commands: rest}}
+    IO.puts("Running reboot command")
+    new_state = %{state | commands: rest}
+    run_commands(rest, data, new_state)
   end
 
 end
