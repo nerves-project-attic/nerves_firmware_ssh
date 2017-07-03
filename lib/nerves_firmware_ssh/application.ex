@@ -32,7 +32,7 @@ defmodule Nerves.Firmware.SSH.Application do
         {:max_sessions, 1},
         {:id_string, :random},
         {:key_cb, {Nerves.Firmware.SSH.Keys, cb_opts}},
-        {:system_dir, :code.priv_dir(:sshdtest)}, # FIXME
+        {:system_dir, :code.priv_dir(:nerves_firmware_ssh)}, # FIXME
         {:subsystems, [{'nerves_firmware_ssh', {Nerves.Firmware.SSH.Handler, []}}]}
       ])
   end
