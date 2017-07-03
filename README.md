@@ -1,6 +1,6 @@
-# Sshdtest
+# Nerves.Firmware.SSH
 
-**TODO: Add description**
+Upload to a Nerves target using the ssh protocol.
 
 ## Create server keys
 
@@ -12,17 +12,24 @@ mkdir -p priv
 The user keys default to ~/.ssh. For Nerves, the user public keys of interest need to
 be copied to the priv dir or someplace.
 
-## Calling
-echo "FWUP,REBOOT" | cat - myfirmware.fw | ssh -s -p 8989 localhost nerves_fw_ssh
+## Manual invocation
+
+If you need to run a firmware update from a shell script, here's how to do it:
+
+```
+FILENAME=myapp.fw
+FILESIZE=$(stat -c%s "$FILENAME")
+printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_fw_ssh
+```
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sshdtest` to your list of dependencies in `mix.exs`:
+by adding `nerves_firmware_ssh` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:sshdtest, "~> 0.1.0"}]
+  [{:nerves_firmware_ssh, "~> 0.1.0"}]
 end
 ```
 
