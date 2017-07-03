@@ -19,7 +19,7 @@ If you need to run a firmware update from a shell script, here's how to do it:
 ```
 FILENAME=myapp.fw
 FILESIZE=$(stat -c%s "$FILENAME")
-printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_fw_ssh
+printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
 ```
 
 ## Installation
