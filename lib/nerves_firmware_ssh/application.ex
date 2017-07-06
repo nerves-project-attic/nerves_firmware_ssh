@@ -16,7 +16,10 @@ defmodule Nerves.Firmware.SSH.Application do
 
   def init() do
     port = Application.get_env(:nerves_firmware_ssh, :port, 8989)
-    authorized_keys = Application.get_env(:nerves_firmware_ssh, :authorized_keys, "")
+    system_dir = Application.get_env(:nerves_firmware_ssh, :system_dir, "/etc/ssh")
+    authorized_keys =
+      Application.get_env(:nerves_firmware_ssh, :authorized_keys, [])
+      |> Enum.join("\n")
     decoded_authorized_keys = :public_key.ssh_decode(authorized_keys, :auth_keys)
 
     cb_opts = [authorized_keys: decoded_authorized_keys]
@@ -26,7 +29,7 @@ defmodule Nerves.Firmware.SSH.Application do
         {:max_sessions, 1},
         {:id_string, :random},
         {:key_cb, {Nerves.Firmware.SSH.Keys, cb_opts}},
-        {:system_dir, :code.priv_dir(:nerves_firmware_ssh)}, # FIXME
+        {:system_dir, to_char_list(system_dir)},
         {:subsystems, [{'nerves_firmware_ssh', {Nerves.Firmware.SSH.Handler, []}}]}
       ])
   end
