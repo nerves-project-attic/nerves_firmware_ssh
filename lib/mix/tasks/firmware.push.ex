@@ -14,7 +14,7 @@ defmodule Mix.Tasks.Firmware.Push do
    * `--target` - The target string of the target configuration.
    * `--firmware` - The path to a fw file.
    * `--port` - The TCP port number to use to connect to the target.
-   * `--user-dir` - The path to where your id_rsa id_rsa.pub key files are located.
+   * `--user-dir` - The path to where your ssh private key files are located.
 
   For example, to push firmware to a device at an IP by specifying a fw file
 
