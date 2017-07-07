@@ -1,34 +1,39 @@
 defmodule Nerves.Firmware.SSH.Mixfile do
   use Mix.Project
 
-  def project do
+  @version "0.1.0-dev"
+
+  @description """
+  Perform over-the-air updates to Nerves devices using ssh
+  """
+
+  def project() do
     [app: :nerves_firmware_ssh,
-     version: "0.1.0",
+     version: @version,
      elixir: "~> 1.4",
+     description: @description,
+     package: package(),
+     docs: [extras: ["README.md"]],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
-  def application do
-    # Specify extra applications you'll use from Erlang/Elixir
+  def application() do
     [extra_applications: [:logger, :ssh],
      mod: {Nerves.Firmware.SSH.Application, []}]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:my_dep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:my_dep, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
-  defp deps do
-    [{:nerves_runtime, "~> 0.3"}]
+  defp deps() do
+    [{:nerves_runtime, "~> 0.3"},
+     {:ex_doc,  "~> 0.11", only: :dev}]
+  end
+
+  defp package() do
+    [
+      maintainers: ["Frank Hunleth"],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/fhunleth/nerves_firmware_ssh"}
+    ]
   end
 end
