@@ -13,6 +13,7 @@ defmodule Mix.Tasks.Firmware.Push do
 
    * `--target` - The target string of the target configuration.
    * `--firmware` - The path to a fw file.
+   * `--port` - The TCP port number to use to connect to the target.
    * `--user-dir` - The path to where your id_rsa id_rsa.pub key files are located.
 
   For example, to push firmware to a device at an IP by specifying a fw file
@@ -26,8 +27,12 @@ defmodule Mix.Tasks.Firmware.Push do
   """
 
   @switches [firmware: :string, target: :string, port: :integer, user_dir: :string]
-  def run([ip | argv]) do
-    {opts, _, _} = OptionParser.parse(argv, switches: @switches)
+  def run(argv) do
+    {opts, args, _} = OptionParser.parse(argv, switches: @switches)
+    if length(args) != 1 do
+	Mix.raise "mix firmware.push expects a target IP address or name"
+    end
+    [ip] = args
     user_dir = opts[:user_dir] || "~/.ssh"
     user_dir = Path.expand(user_dir) |> to_char_list
     fwfile = firmware(opts)
