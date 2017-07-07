@@ -1,13 +1,12 @@
 # Nerves.Firmware.SSH
 
-This project contains the necessary infrastruction to support uploading Nerves
-firmware images to targets using [ssh](https://en.wikipedia.org/wiki/Secure_Shell).
+This project contains the necessary infrastruction to support "over-the-air" firmware
+updates with Nerves by using [ssh](https://en.wikipedia.org/wiki/Secure_Shell).
 
-It has a number of defaults that make it convenient for development, but it can
-be configured in a way suitable for some deployments. The main restriction on
-use in deployment is the need for the server that pushes updates out to be able
-to connect to devices. However, if you're devices are in a LAN or within a VPN,
-then you can use scripts or tools like Ansible to push updates out.
+The default settings make it quick to integrate into Nerves projects for
+development work. Later on, if your deployed devices can be reached by `ssh`,
+it's even possible to use tools like Ansible or even shell scripts to update a
+set of devices all at once.
 
 ## Installation
 
