@@ -141,5 +141,8 @@ The data coming back from the server is the output of the invoked commands. This
 is primarily textual output suitable for reading by humans. If automating
 updates, this output should be logged to help debug update failures if any.
 
+# License
 
+All source code is licensed under the
+[Apache License, 2.0](https://opensource.org/licenses/Apache-2.0).
 
