@@ -1,5 +1,7 @@
 # Nerves.Firmware.SSH
 
+[![Hex version](https://img.shields.io/hexpm/v/nerves_firmware_ssh.svg "Hex version")](https://hex.pm/packages/nerves_firmware_ssh)
+
 This project contains the necessary infrastruction to support "over-the-air" firmware
 updates with Nerves by using [ssh](https://en.wikipedia.org/wiki/Secure_Shell).
 
