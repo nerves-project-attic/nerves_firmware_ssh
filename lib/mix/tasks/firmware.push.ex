@@ -29,7 +29,11 @@ defmodule Mix.Tasks.Firmware.Push do
 
   @switches [firmware: :string, target: :string, port: :integer, user_dir: :string, passphrase: :string]
   def run(argv) do
-    {opts, args, _} = OptionParser.parse(argv, switches: @switches)
+    {opts, args, unknown} = OptionParser.parse(argv, strict: @switches)
+    if !Enum.empty?(unknown) do
+      [{param, _} | _] = unknown
+      Mix.raise "unknown parameter passed to mix firmware.push: #{param}"
+    end
     if length(args) != 1 do
 	Mix.raise "mix firmware.push expects a target IP address or name"
     end
