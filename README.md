@@ -53,9 +53,10 @@ DNS name of the device that you want to update.
 
 The `nerves.firmware.push` takes several arguments:
 
-   * `--target` - The target string of the target configuration.
    * `--firmware` - The path to a fw file.
+   * `--passphrase` - The passphrase on the SSH private key (if any)
    * `--port` - The TCP port number to use to connect to the target.
+   * `--target` - The target string of the target configuration.
    * `--user-dir` - The path to where your id_rsa id_rsa.pub key files are located.
 
 Run `mix help firmware.push` for more information.

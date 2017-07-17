@@ -15,6 +15,7 @@ defmodule Mix.Tasks.Firmware.Push do
    * `--firmware` - The path to a fw file.
    * `--port` - The TCP port number to use to connect to the target.
    * `--user-dir` - The path to where your ssh private key files are located.
+   * `--passphrase` - The passphrase for the private key file
 
   For example, to push firmware to a device at an IP by specifying a fw file
 
@@ -26,7 +27,7 @@ defmodule Mix.Tasks.Firmware.Push do
 
   """
 
-  @switches [firmware: :string, target: :string, port: :integer, user_dir: :string]
+  @switches [firmware: :string, target: :string, port: :integer, user_dir: :string, passphrase: :string]
   def run(argv) do
     {opts, args, _} = OptionParser.parse(argv, switches: @switches)
     if length(args) != 1 do
@@ -42,8 +43,11 @@ defmodule Mix.Tasks.Firmware.Push do
     Application.ensure_all_started(:ssh)
     connect_opts = [silently_accept_hosts: true, user_dir: user_dir]
     connect_opts =
-      if passphrase = opts[:rsa_pass_phrase] do
-        Keyword.put(connect_opts, :rsa_pass_phrase, passphrase)
+      if passphrase = opts[:passphrase] do
+        passphrase = to_char_list(passphrase)
+        connect_opts
+        |> Keyword.put(:rsa_pass_phrase, passphrase)
+        |> Keyword.put(:dsa_pass_phrase, passphrase)
       else
         connect_opts
       end
