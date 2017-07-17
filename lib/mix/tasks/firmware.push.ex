@@ -1,13 +1,13 @@
 defmodule Mix.Tasks.Firmware.Push do
   use Mix.Task
 
-  @shortdoc "Pushes firmware to a Nerves device over SSH"
+  @shortdoc "Pushes a firmware update to a Nerves device over SSH"
 
   @moduledoc """
-  Pushes firmware to a Nerves device.
+  Upgrades the firmware on a Nerves device using SSH.
 
-  This task will take a fw file path passed as --firmware or discover it from
-  a target passed as --target.
+  This task copies a `.fw` file to a Nerves device running
+  `nerves_firmware_ssh`, upgrades the device and then reboots.
 
   ## Command line options
 
@@ -17,13 +17,15 @@ defmodule Mix.Tasks.Firmware.Push do
    * `--user-dir` - The path to where your ssh private key files are located.
    * `--passphrase` - The passphrase for the private key file
 
-  For example, to push firmware to a device at an IP by specifying a fw file
+  ## Examples
+
+  Upgrade a Raspberry Pi Zero at `nerves.local`:
+
+    MIX_TARGET=rpi0 mix firmware.push
+
+  Upgrade `192.168.1.120` and explicitly pass the `.fw` file:
 
     mix firmware.push 192.168.1.120 --firmware _images/rpi3/my_app.fw
-
-  Or by discovering it with the target
-
-    mix firmware.push 192.168.1.120 --target rpi3
 
   """
 
