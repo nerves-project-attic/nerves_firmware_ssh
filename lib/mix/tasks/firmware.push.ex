@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Firmware.Push do
     stats = File.stat!(fwfile)
     fwsize = stats.size
     Application.ensure_all_started(:ssh)
-    connect_opts = [silently_accept_hosts: true, user_dir: user_dir]
+    connect_opts = [silently_accept_hosts: true, user_dir: user_dir, auth_methods: 'publickey']
     connect_opts =
       if passphrase = opts[:passphrase] do
         passphrase = to_char_list(passphrase)
@@ -56,7 +56,16 @@ defmodule Mix.Tasks.Firmware.Push do
         connect_opts
       end
 
-    {:ok, connection_ref} = :ssh.connect(to_char_list(ip), port, connect_opts)
+    connection_ref =
+      case :ssh.connect(to_char_list(ip), port, connect_opts) do
+        {:ok, connection_ref} ->
+          connection_ref
+        {:error, 'Unable to connect using the available authentication methods'} ->
+          Mix.raise "couldn't connected to #{ip}: check private key and the passphrase protecting it"
+        {:error, reason} ->
+          Mix.raise "couldn't connected to #{ip}: #{inspect reason}"
+      end
+
     {:ok, channel_id} = :ssh_connection.session_channel(connection_ref, :infinity)
     :success = :ssh_connection.subsystem(connection_ref, channel_id, 'nerves_firmware_ssh', :infinity)
     :ok = :ssh_connection.send(connection_ref, channel_id, "fwup:#{fwsize},reboot\n")
