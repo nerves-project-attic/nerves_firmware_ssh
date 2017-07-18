@@ -11,17 +11,17 @@ defmodule Mix.Tasks.Firmware.Push do
 
   ## Command line options
 
-   * `--target` - The target string of the target configuration.
-   * `--firmware` - The path to a fw file.
-   * `--port` - The TCP port number to use to connect to the target.
-   * `--user-dir` - The path to where your ssh private key files are located.
+   * `--firmware` - The path to a fw file
    * `--passphrase` - The passphrase for the private key file
+   * `--port` - The TCP port number to use to connect to the target
+   * `--target` - Alternative to setting the `MIX_TARGET` environment variable
+   * `--user-dir` - The path to your ssh private key files (e.g., "~/.ssh")
 
   ## Examples
 
   Upgrade a Raspberry Pi Zero at `nerves.local`:
 
-    MIX_TARGET=rpi0 mix firmware.push
+    MIX_TARGET=rpi0 mix firmware.push nerves.local
 
   Upgrade `192.168.1.120` and explicitly pass the `.fw` file:
 
