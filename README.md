@@ -63,7 +63,9 @@ Run `mix help firmware.push` for more information.
 
 ## Manual invocation
 
-If you need to push a firmware update using commandline ssh(1), here's how to do it:
+The `mix nerves.firmware.push` method uses Erlang's ssh implementation which has
+some limitations like not supporting password protected private keys. If this is
+an issue or if you just want to use commandline ssh(1), here's how to do it:
 
 ```
 FILENAME=myapp.fw
@@ -71,7 +73,11 @@ FILESIZE=$(stat -c%s "$FILENAME")
 printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
 ```
 
-See the section on the `nerves_firmware_ssh` protocol and the ssh(1) man page
+The
+[upload.sh](https://github.com/fhunleth/nerves_firmware_ssh/blob/master/upload.sh)
+script has a slightly nicer implementation of the above.
+
+Also see the section on the `nerves_firmware_ssh` protocol and the ssh(1) man page
 for more details.
 
 ## Device keys
