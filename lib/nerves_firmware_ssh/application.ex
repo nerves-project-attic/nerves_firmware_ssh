@@ -36,9 +36,9 @@ defmodule Nerves.Firmware.SSH.Application do
   def system_dir() do
     cond do
       system_dir = Application.get_env(:nerves_firmware_ssh, :system_dir) ->
-        to_char_list(system_dir)
+        to_charlist(system_dir)
       File.dir?("/etc/ssh") ->
-        to_char_list("/etc/ssh")
+        to_charlist("/etc/ssh")
       true ->
         :code.priv_dir(:nerves_firmware_ssh)
     end

@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Firmware.Push do
     end
     [ip] = args
     user_dir = opts[:user_dir] || "~/.ssh"
-    user_dir = Path.expand(user_dir) |> to_char_list
+    user_dir = Path.expand(user_dir) |> to_charlist
     fwfile = firmware(opts)
     port = opts[:port] || 8989
     stats = File.stat!(fwfile)
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Firmware.Push do
     connect_opts = [silently_accept_hosts: true, user_dir: user_dir, auth_methods: 'publickey']
     connect_opts =
       if passphrase = opts[:passphrase] do
-        passphrase = to_char_list(passphrase)
+        passphrase = to_charlist(passphrase)
         connect_opts
         |> Keyword.put(:rsa_pass_phrase, passphrase)
         |> Keyword.put(:dsa_pass_phrase, passphrase)
@@ -59,7 +59,7 @@ defmodule Mix.Tasks.Firmware.Push do
       end
 
     connection_ref =
-      case :ssh.connect(to_char_list(ip), port, connect_opts) do
+      case :ssh.connect(to_charlist(ip), port, connect_opts) do
         {:ok, connection_ref} ->
           connection_ref
         {:error, 'Unable to connect using the available authentication methods'} ->
