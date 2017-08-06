@@ -120,7 +120,7 @@ Another method is to either symlink `/etc/ssh` on the device to a writable
 location on the device (Nerves devices have read-only root filesystems) or to
 specify an alternative location for device keys in your `config.exs`:
 
-```
+```elixir
 config :nerves_firmware_ssh,
   authorized_keys: [
   ],
