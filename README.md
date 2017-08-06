@@ -2,8 +2,9 @@
 
 [![Hex version](https://img.shields.io/hexpm/v/nerves_firmware_ssh.svg "Hex version")](https://hex.pm/packages/nerves_firmware_ssh)
 
-This project contains the necessary infrastruction to support "over-the-air" firmware
-updates with Nerves by using [ssh](https://en.wikipedia.org/wiki/Secure_Shell).
+This project contains the necessary infrastruction to support "over-the-air"
+firmware updates with Nerves by using
+[ssh](https://en.wikipedia.org/wiki/Secure_Shell).
 
 The default settings make it quick to integrate into Nerves projects for
 development work. Later on, if your deployed devices can be reached by `ssh`,
@@ -26,11 +27,20 @@ created when you created your `ssh` keys. If you haven't done this, the followin
 [article](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
 may be helpful. Here's an example:
 
-```
+```elixir
 config :nerves_firmware_ssh,
   authorized_keys: [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDBCdMwNo0xOE86il0DB2Tq4RCv07XvnV7W1uQBlOOE0ZZVjxmTIOiu8XcSLy0mHj11qX5pQH3Th6Jmyqdj",
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCaf37TM8GfNKcoDjoewa6021zln4GvmOiXqW6SRpF61uNWZXurPte1u8frrJX1P/hGxCL7YN3cV6eZqRiF"
+  ]
+```
+
+Here's another way that may work well for you that avoids needing to commit your keys:
+
+```elixir
+config :nerves_firmware_ssh,
+  authorized_keys: [
+    File.read!(Path.join(System.user_home!, ".ssh/id_rsa.pub"))
   ]
 ```
 
