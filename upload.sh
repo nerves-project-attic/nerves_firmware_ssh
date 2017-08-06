@@ -28,6 +28,16 @@ echo "Uploading $FILENAME to $DESTINATION..."
 
 [ -f "$FILENAME" ] || (echo "Error: can't find $FILENAME"; exit 1)
 
-FILESIZE=$(stat -c%s "$FILENAME")
+case "$(uname -s)" in
+    Darwin|FreeBSD|NetBSD|OpenBSD|DragonFly)
+	# BSD stat
+        FILESIZE=$(stat -f %z "$FILENAME")
+        ;;
+    *)
+	# GNU stat
+        FILESIZE=$(stat -c%s "$FILENAME")
+        ;;
+esac
+
 printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 $DESTINATION nerves_firmware_ssh
 
