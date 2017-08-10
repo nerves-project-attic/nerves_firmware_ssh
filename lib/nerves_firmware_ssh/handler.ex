@@ -21,7 +21,7 @@ defmodule Nerves.Firmware.SSH.Handler do
   end
 
   def handle_msg({:ssh_channel_up, channel_id, connection_manager}, state) do
-    Logger.debug("new ssh connection")
+    Logger.debug("nerves_firmware_ssh: new connection")
     {:ok, %{state | id: channel_id, cm: connection_manager}}
   end
 
@@ -72,7 +72,7 @@ defmodule Nerves.Firmware.SSH.Handler do
   end
 
   def terminate(_reason, _state) do
-    Logger.debug("ssh connection terminated")
+    Logger.debug("nerves_firmware_ssh: connection terminated")
     :ok
   end
 
@@ -128,7 +128,7 @@ defmodule Nerves.Firmware.SSH.Handler do
     end
   end
   defp run_commands([:reboot | rest], data, state) do
-    Logger.debug("Initiating reboot...")
+    Logger.debug("nerves_firmware_ssh: rebooting...")
     :ssh_connection.send(state.cm, state.id, "Rebooting...\n")
     Nerves.Runtime.reboot()
 
