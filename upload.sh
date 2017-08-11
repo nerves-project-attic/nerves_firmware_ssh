@@ -39,5 +39,28 @@ case "$(uname -s)" in
         ;;
 esac
 
-printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 $DESTINATION nerves_firmware_ssh
+if [ "$(uname -s)" = "Darwin" ]; then
+    DESTINATION_IP=$(arp -n $DESTINATION | sed 's/.* (\([0-9.]*\).*/\1/' || exit 0)
+    if [ -z "$DESTINATION_IP" ]; then
+        echo "Can't resolve $DESTINATION"
+        exit 1
+    fi
+
+    IS_DEST_LL=$(echo $DESTINATION_IP | grep '^169\.254\.')
+    if [ -n "$IS_DEST_LL" ]; then
+        LINK_LOCAL_IP=$(ifconfig | grep 169.254 | sed 's/.*inet \([0-9.]*\) .*/\1/')
+        if [ -z "$LINK_LOCAL_IP" ]; then
+            echo "Can't find an interface with a link local address?"
+            exit 1
+        fi
+
+        # If a link local address, then force ssh to bind to the link local IP
+        # when connecting. This fixes an issue where the ssh connection is bound
+        # to another Ethernet interface. The TCP SYN packet that goes out has no
+        # chance of working when this happens.
+        SSH_OPTIONS="$SSH_OPTIONS -b $LINK_LOCAL_IP"
+    fi
+fi
+
+printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 $SSH_OPTIONS $DESTINATION nerves_firmware_ssh
 
