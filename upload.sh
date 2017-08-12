@@ -39,6 +39,11 @@ case "$(uname -s)" in
         ;;
 esac
 
+# Don't fall back to asking for passwords, since that won't work
+# and it's easy to misread the message thinking that it's asking
+# for the private key password
+SSH_OPTIONS="-o PreferredAuthentications=publickey"
+
 if [ "$(uname -s)" = "Darwin" ]; then
     DESTINATION_IP=$(arp -n $DESTINATION | sed 's/.* (\([0-9.]*\).*/\1/' || exit 0)
     if [ -z "$DESTINATION_IP" ]; then
