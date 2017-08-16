@@ -39,6 +39,9 @@ case "$(uname -s)" in
         ;;
 esac
 
+# Workaround for https://bugs.erlang.org/browse/ERL-469
+unset SSH_AUTH_SOCK
+
 # Don't fall back to asking for passwords, since that won't work
 # and it's easy to misread the message thinking that it's asking
 # for the private key password
