@@ -21,12 +21,19 @@ set -e
 DESTINATION=$1
 FILENAME="$2"
 
+help() {
+    echo
+    echo "upload.sh [destination IP] [Path to .fw file]"
+    exit 1
+}
+
 [ -n "$DESTINATION" ] || DESTINATION=nerves.local
-[ -n "$FILENAME" ] || FILENAME=$(ls ./_build/rpi0/dev/nerves/images/*.fw | head -1)
+[ -n "$MIX_TARGET" ] || MIX_TARGET=rpi0
+[ -n "$FILENAME" ] || FILENAME=$(ls ./_build/$MIX_TARGET/dev/nerves/images/*.fw | head -1)
 
 echo "Uploading $FILENAME to $DESTINATION..."
 
-[ -f "$FILENAME" ] || (echo "Error: can't find $FILENAME"; exit 1)
+[ -f "$FILENAME" ] || (echo "Error: can't find '$FILENAME'"; help)
 
 case "$(uname -s)" in
     Darwin|FreeBSD|NetBSD|OpenBSD|DragonFly)
