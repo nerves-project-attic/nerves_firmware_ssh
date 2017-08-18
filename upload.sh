@@ -15,6 +15,10 @@
 # Host nerves.local
 #   UserKnownHostsFile /dev/null
 #   StrictHostKeyChecking no
+#
+# Feel free to copy this script whereever is convenient. The original
+# is at https://github.com/fhunleth/nerves_firmware_ssh/blob/master/upload.sh
+#
 
 set -e
 
