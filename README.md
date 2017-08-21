@@ -102,6 +102,8 @@ If you're not able to connect, try the following:
 4. Add `:runtime_tools` to the `:extra_applications` key in your `mix.exs` and
    run `:ssh_dbg.messages()` on the target and try to connect. You should get
    some diagnostic data from the Erlang `:ssh` application that may help.
+5. File an [issue](https://github.com/fhunleth/nerves_firmware_ssh/issues/new)
+   or try the `#nerves` channel on the [Elixir Slack](https://elixir-slackin.herokuapp.com/).
 
 ## Device keys
 
