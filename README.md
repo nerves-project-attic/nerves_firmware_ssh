@@ -90,6 +90,19 @@ script has a slightly nicer implementation of the above.
 Also see the section on the `nerves_firmware_ssh` protocol and the ssh(1) man page
 for more details.
 
+## Troubleshooting
+
+If you're not able to connect, try the following:
+
+1. Make sure that there's network connectivity and that you can ping the device.
+2. Check that the authorized keys are set correctly. On the target, run
+   `Application.get_all_env(:nerves_firmware_ssh)` and compare keys.
+3. Are you trying to use OpenSSH's `ssh-agent`? See
+   [ERL-469](https://bugs.erlang.org/browse/ERL-469) and try not using it.
+4. Add `:runtime_tools` to the `:extra_applications` key in your `mix.exs` and
+   run `:ssh_dbg.messages()` on the target and try to connect. You should get
+   some diagnostic data from the Erlang `:ssh` application that may help.
+
 ## Device keys
 
 Devices also have keys. This prevents man-in-the-middle attacks. For
