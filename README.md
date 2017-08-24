@@ -55,13 +55,13 @@ The easiest way to push updates during development is to let `mix` do it for
 you:
 
 ```
-MIX_TARGET=rpi0 mix nerves.firmware.push nerves.local
+MIX_TARGET=rpi0 mix firmware.push nerves.local
 ```
 
 Substitute `rpi0` above for your target and `nerves.local` for the IP address or
 DNS name of the device that you want to update.
 
-The `nerves.firmware.push` takes several arguments:
+The `firmware.push` takes several arguments:
 
    * `--firmware` - The path to a fw file.
    * `--passphrase` - The passphrase on the SSH private key (if any)
@@ -73,7 +73,7 @@ Run `mix help firmware.push` for more information.
 
 ## Manual invocation
 
-The `mix nerves.firmware.push` method uses Erlang's ssh implementation which has
+The `mix firmware.push` method uses Erlang's ssh implementation which has
 some limitations like not supporting password protected private keys. If this is
 an issue or if you just want to use commandline ssh(1), here's how to do it:
 
