@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.2
+
+  * Improvements
+    * Remove my name from the throwaway ssh key
+    * Documentation updates throughout
+    * Some upload.sh fixes to workaround issues discovered with ssh
+
 ## v0.2.1
 
   * Bug fixes
