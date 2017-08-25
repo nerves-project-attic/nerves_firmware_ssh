@@ -1,4 +1,5 @@
 defmodule Nerves.Firmware.SSH.Command do
+  @moduledoc false
 
   @doc """
   Parse a command string.

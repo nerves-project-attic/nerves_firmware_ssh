@@ -1,4 +1,5 @@
 defmodule Nerves.Firmware.SSH.Keys do
+  @moduledoc false
 
   def host_key(algorithm, options) do
     # Delegate to system implementation for handling the host keys

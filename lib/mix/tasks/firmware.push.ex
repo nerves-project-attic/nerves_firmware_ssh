@@ -21,11 +21,11 @@ defmodule Mix.Tasks.Firmware.Push do
 
   Upgrade a Raspberry Pi Zero at `nerves.local`:
 
-    MIX_TARGET=rpi0 mix firmware.push nerves.local
+      MIX_TARGET=rpi0 mix firmware.push nerves.local
 
   Upgrade `192.168.1.120` and explicitly pass the `.fw` file:
 
-    mix firmware.push 192.168.1.120 --firmware _images/rpi3/my_app.fw
+      mix firmware.push 192.168.1.120 --firmware _images/rpi3/my_app.fw
 
   """
 

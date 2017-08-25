@@ -1,10 +1,13 @@
 defmodule Nerves.Firmware.SSH.Handler do
   require Logger
 
+  @moduledoc false
+
   alias Nerves.Firmware.SSH.Command
   alias Nerves.Firmware.SSH.Fwup
 
   defmodule State do
+    @moduledoc false
     defstruct state: :parse_commands,
       id: nil,
       cm: nil,

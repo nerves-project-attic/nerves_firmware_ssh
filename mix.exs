@@ -10,10 +10,10 @@ defmodule Nerves.Firmware.SSH.Mixfile do
   def project() do
     [app: :nerves_firmware_ssh,
      version: @version,
-     elixir: "~> 1.4",
      description: @description,
      package: package(),
-     docs: [extras: ["README.md"]],
+     elixir: "~> 1.4",
+     docs: docs(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -22,6 +22,11 @@ defmodule Nerves.Firmware.SSH.Mixfile do
   def application() do
     [extra_applications: [:logger, :ssh],
      mod: {Nerves.Firmware.SSH.Application, []}]
+  end
+
+  defp docs() do
+    [main: "readme",
+     extras: ["README.md"]]
   end
 
   defp deps() do

@@ -2,8 +2,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
   use GenServer
   require Logger
 
-  @moduledoc """
-  """
+  @moduledoc false
 
   def start_link(cm) do
     GenServer.start_link(__MODULE__, [cm])
