@@ -105,6 +105,23 @@ If you're not able to connect, try the following:
 5. File an [issue](https://github.com/fhunleth/nerves_firmware_ssh/issues/new)
    or try the `#nerves` channel on the [Elixir Slack](https://elixir-slackin.herokuapp.com/).
 
+### Oops, I have the wrong keys on the device
+
+Do not panic! You can temporarily change them if you have access to the console.
+Here's what to do:
+
+```elixir
+Application.stop(:nerves_firmware_ssh)
+Application.stop(:ssh)
+
+Application.put_env(:nerves_firmware_ssh, :authorized_keys, ["ssh-rsa AAAAB3NzaC1yc2EAA..."])
+
+Application.start(:ssh)
+Application.start(:nerves_firmware_ssh)
+```
+
+You should be able to update the devices firmware now.
+
 ## Device keys
 
 Devices also have keys. This prevents man-in-the-middle attacks. For
