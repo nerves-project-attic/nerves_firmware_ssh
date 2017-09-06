@@ -83,9 +83,13 @@ FILESIZE=$(stat -c%s "$FILENAME")
 printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
 ```
 
-The
-[upload.sh](https://github.com/fhunleth/nerves_firmware_ssh/blob/master/upload.sh)
-script has a slightly nicer implementation of the above.
+## Upload Script Generation
+
+This project includes a mix task to generate a script with a slightly more robust implementation of the above
+
+```
+$ mix nerves.gen.script.upload
+```
 
 Also see the section on the `nerves_firmware_ssh` protocol and the ssh(1) man page
 for more details.
@@ -196,4 +200,3 @@ updates, this output should be logged to help debug update failures if any.
 
 All source code is licensed under the
 [Apache License, 2.0](https://opensource.org/licenses/Apache-2.0).
-
