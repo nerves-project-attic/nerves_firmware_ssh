@@ -10,7 +10,9 @@ defmodule Mix.Tasks.Nerves.Gen.Script.Upload do
     Generate a new custom script to use instead of firmware.push
     """
     filename = determine_filename()
-    upload_script_contents = EEx.eval_file("./priv/templates/script.upload.eex", [])
+    priv_dir = to_string(:code.priv_dir(:nerves_firmware_ssh))
+    template = Path.join(priv_dir, "templates/script.upload.eex")
+    upload_script_contents = EEx.eval_file(template, [])
     Mix.shell.info """
 
     Generating a new file named #{filename}
