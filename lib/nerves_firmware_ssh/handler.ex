@@ -104,6 +104,10 @@ defmodule Nerves.Firmware.SSH.Handler do
     new_state = %{state | buffer: alldata}
     {:ok, new_state}
   end
+  defp process_message(:wait_for_fwup_error, _data, state) do
+    # Just disgard anything we get
+    {:ok, state}
+  end
 
   defp run_commands([], _data, state) do
     :ssh_connection.send_eof(state.cm, state.id)
@@ -115,19 +119,30 @@ defmodule Nerves.Firmware.SSH.Handler do
     bytes_left = count - state.bytes_processed
     bytes_to_process = min(bytes_left, byte_size(data))
     <<for_fwup::binary-size(bytes_to_process), leftover::binary>> = data
-    :ok = Fwup.send_chunk(state.fwup, for_fwup)
-
     new_bytes_processed = state.bytes_processed + bytes_to_process
-    if new_bytes_processed == count do
-      new_state = %{state |
-                    state: :wait_for_fwup,
-                    buffer: leftover,
-                    commands: rest,
-                    bytes_processed: 0}
-      {:ok, new_state}
-    else
-      new_state = %{state | bytes_processed: new_bytes_processed}
-      {:ok, new_state}
+
+    case {Fwup.send_chunk(state.fwup, for_fwup), new_bytes_processed} do
+      {:ok, ^count} ->
+        # Done
+        new_state = %{state |
+                      state: :wait_for_fwup,
+                      buffer: leftover,
+                      commands: rest,
+                      bytes_processed: 0}
+        {:ok, new_state}
+      {:ok, _} ->
+        # More left
+        new_state = %{state | bytes_processed: new_bytes_processed}
+        {:ok, new_state}
+      _ ->
+        # Error - need to wait for fwup to exit so that we can
+        # report back anything that it may say
+        new_state = %{state |
+                      state: :wait_for_fwup_error,
+                      buffer: <<>>,
+                      commands: [],
+                      bytes_processed: 0}
+        {:ok, new_state}
     end
   end
   defp run_commands([:reboot | rest], data, state) do
@@ -139,7 +154,8 @@ defmodule Nerves.Firmware.SSH.Handler do
     run_commands(rest, data, new_state)
   end
 
-  defp maybe_fwup(%{fwup: fwup} = state) when fwup == nil do
+  defp maybe_fwup(%{fwup: nil} = state) do
+    Logger.debug("nerves_firmware_ssh: starting fwup...\n")
     :ssh_connection.send(state.cm, state.id, "Running fwup...\n")
     {:ok, new_fwup} = Fwup.start_link(self())
     %{state | fwup: new_fwup}
