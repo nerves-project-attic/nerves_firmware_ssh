@@ -10,6 +10,10 @@ defmodule CommandTest do
     assert Command.parse("reboot\nleftovers") == {:ok, [:reboot], "leftovers"}
   end
 
+  test "that an invalid command errors" do
+    assert Command.parse("rebot\nleftovers") == {:error, :invalid_command}
+  end
+
   test "that multiple commands parse" do
     assert Command.parse("fwup:123,reboot\nleftovers") == {
              :ok,

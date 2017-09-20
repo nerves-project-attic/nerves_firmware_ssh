@@ -1,15 +1,24 @@
 defmodule Nerves.Firmware.SSH.Command do
   @moduledoc false
 
+  @type command :: :reboot | {:fwup, non_neg_integer} | :invalid
+
   @doc """
   Parse a command string.
 
   Commands are comma separated and terminated by a newline.
   """
+  @spec parse(String.t()) :: {:ok, [command]} | {:error, :partial | :invalid_command}
   def parse(data) do
     case String.split(data, "\n", parts: 2) do
-      [commands, rest] ->
-        {:ok, parse_commands(commands), rest}
+      [command_string, rest] ->
+        commands = parse_commands(command_string)
+
+        if Enum.member?(commands, :invalid) do
+          {:error, :invalid_command}
+        else
+          {:ok, commands, rest}
+        end
 
       [_] ->
         {:error, :partial}
@@ -24,5 +33,5 @@ defmodule Nerves.Firmware.SSH.Command do
 
   def parse_command(<<"fwup:", filesize::binary>>), do: {:fwup, String.to_integer(filesize)}
   def parse_command("reboot"), do: :reboot
-  def parse_command(data) when byte_size(data) > 64, do: :invalid
+  def parse_command(_data), do: :invalid
 end
