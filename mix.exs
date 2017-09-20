@@ -30,7 +30,11 @@ defmodule Nerves.Firmware.SSH.Mixfile do
   end
 
   defp deps() do
-    [{:nerves_runtime, "~> 0.4"}, {:ex_doc, "~> 0.11", only: :dev}]
+    [
+      {:nerves_runtime, "~> 0.4"},
+      {:ex_doc, "~> 0.11", only: :dev},
+      {:dialyxir, "~> 0.5", only: :dev, runtime: false}
+    ]
   end
 
   defp package() do
