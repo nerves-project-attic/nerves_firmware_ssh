@@ -10,6 +10,7 @@ defmodule Nerves.Firmware.SSH.Command do
     case String.split(data, "\n", parts: 2) do
       [commands, rest] ->
         {:ok, parse_commands(commands), rest}
+
       [_] ->
         {:error, :partial}
     end

@@ -15,5 +15,4 @@ defmodule Nerves.Firmware.SSH do
   See the README.md for configuration options. In particular, make sure to add
   all authorized ssh keys.
   """
-
 end

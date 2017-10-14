@@ -8,30 +8,29 @@ defmodule Nerves.Firmware.SSH.Mixfile do
   """
 
   def project() do
-    [app: :nerves_firmware_ssh,
-     version: @version,
-     description: @description,
-     package: package(),
-     elixir: "~> 1.4",
-     docs: docs(),
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :nerves_firmware_ssh,
+      version: @version,
+      description: @description,
+      package: package(),
+      elixir: "~> 1.4",
+      docs: docs(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   def application() do
-    [extra_applications: [:logger, :ssh],
-     mod: {Nerves.Firmware.SSH.Application, []}]
+    [extra_applications: [:logger, :ssh], mod: {Nerves.Firmware.SSH.Application, []}]
   end
 
   defp docs() do
-    [main: "readme",
-     extras: ["README.md"]]
+    [main: "readme", extras: ["README.md"]]
   end
 
   defp deps() do
-    [{:nerves_runtime, "~> 0.4"},
-     {:ex_doc,  "~> 0.11", only: :dev}]
+    [{:nerves_runtime, "~> 0.4"}, {:ex_doc, "~> 0.11", only: :dev}]
   end
 
   defp package() do

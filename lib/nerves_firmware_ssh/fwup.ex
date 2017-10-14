@@ -17,13 +17,14 @@ defmodule Nerves.Firmware.SSH.Fwup do
     devpath = Nerves.Runtime.KV.get("nerves_fw_devpath") || "/dev/mmcblk0"
     task = "upgrade"
 
-    port = Port.open({:spawn_executable, fwup},
-      [{:args, ["--apply", "--no-unmount", "-d", devpath,
-                "--task", task]},
-       :use_stdio,
-       :binary,
-       :exit_status
+    port =
+      Port.open({:spawn_executable, fwup}, [
+        {:args, ["--apply", "--no-unmount", "-d", devpath, "--task", task]},
+        :use_stdio,
+        :binary,
+        :exit_status
       ])
+
     {:ok, %{port: port, cm: cm}}
   end
 
@@ -36,6 +37,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
     :ok = :ssh_channel.cast(state.cm, {:fwup_data, response})
     {:noreply, state}
   end
+
   def handle_info({_port, {:exit_status, status}}, state) do
     Logger.info("fwup exited with status #{status}")
     :ok = :ssh_channel.cast(state.cm, {:fwup_exit, status})

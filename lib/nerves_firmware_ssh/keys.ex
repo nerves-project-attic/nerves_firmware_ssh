@@ -12,6 +12,6 @@ defmodule Nerves.Firmware.SSH.Keys do
     keys = Keyword.get(cb_opts, :authorized_keys)
 
     # If any of them match, then we're good.
-    Enum.any?(keys, fn({k, _info}) -> k == key end)
+    Enum.any?(keys, fn {k, _info} -> k == key end)
   end
 end
