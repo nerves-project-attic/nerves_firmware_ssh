@@ -68,7 +68,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
         exit 1
     fi
 
-    IS_DEST_LL=$(echo $DESTINATION_IP | grep '^169\.254\.')
+    IS_DEST_LL=$(echo $DESTINATION_IP | grep '^169\.254\.' || exit 0)
     if [ -n "$IS_DEST_LL" ]; then
         LINK_LOCAL_IP=$(ifconfig | grep 169.254 | sed 's/.*inet \([0-9.]*\) .*/\1/')
         if [ -z "$LINK_LOCAL_IP" ]; then
