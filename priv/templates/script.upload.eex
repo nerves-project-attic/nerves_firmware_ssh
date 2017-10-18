@@ -43,7 +43,7 @@ help() {
 [ -f "$FILENAME" ] || (echo "Error: can't find '$FILENAME'"; help)
 
 # Check the flavor of stat
-if stat --version | grep GNU >/dev/null; then
+if stat --version 2>/dev/null | grep GNU >/dev/null; then
     # The QNU way
     FILESIZE=$(stat -c%s "$FILENAME")
 else
