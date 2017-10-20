@@ -41,7 +41,7 @@ defmodule Nerves.Firmware.SSH.Mixfile do
     [
       maintainers: ["Frank Hunleth"],
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/fhunleth/nerves_firmware_ssh"}
+      links: %{"GitHub" => "https://github.com/nerves-project/nerves_firmware_ssh"}
     ]
   end
 end
