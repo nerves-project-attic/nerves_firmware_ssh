@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.3.0
+
+  * Improvements
+    * If using the upload.sh script, there's no need to copy it anymore. Just
+      run `mix firmware.gen.script` to get a copy.
+
+  * Bug fixes
+    * Fix race condition that prevented firmware update errors from being
+      returned. This requires fwup v0.17.0 to work which is included in the
+      latest nerves_system_br release and official systems.
+    * Fixed a couple errors on OSX with the upload script.
+
 ## v0.2.2
 
   * Improvements
