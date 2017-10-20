@@ -1,5 +1,5 @@
-defmodule Mix.Tasks.Nerves.Gen.Script.Upload do
-  @shortdoc "Generates a script for custom remote firmware updates"
+defmodule Mix.Tasks.Firmware.Gen.Script do
+  @shortdoc "Generates a shell script for pushing firmware updates"
 
   @default_filename "upload.sh"
 
@@ -7,8 +7,8 @@ defmodule Mix.Tasks.Nerves.Gen.Script.Upload do
 
   def run(_) do
     Mix.shell().info("""
-    
-    Generate a new custom script to use instead of firmware.push
+
+    Generate a new custom script to use instead of `mix firmware.push`
     """)
 
     filename = determine_filename()
@@ -17,7 +17,7 @@ defmodule Mix.Tasks.Nerves.Gen.Script.Upload do
     upload_script_contents = EEx.eval_file(template, [])
 
     Mix.shell().info("""
-    
+
     Generating a new file named #{filename}
     """)
 

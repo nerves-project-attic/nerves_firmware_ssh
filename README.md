@@ -61,7 +61,7 @@ MIX_TARGET=rpi0 mix firmware.push nerves.local
 Substitute `rpi0` above for your target and `nerves.local` for the IP address or
 DNS name of the device that you want to update.
 
-The `firmware.push` takes several arguments:
+The `firmware.push` command takes several arguments:
 
    * `--firmware` - The path to a fw file.
    * `--passphrase` - The passphrase on the SSH private key (if any)
@@ -71,28 +71,25 @@ The `firmware.push` takes several arguments:
 
 Run `mix help firmware.push` for more information.
 
-## Manual invocation
-
-The `mix firmware.push` method uses Erlang's ssh implementation which has
-some limitations like not supporting password protected private keys. If this is
-an issue or if you just want to use commandline ssh(1), here's how to do it:
-
-```
-FILENAME=myapp.fw
-FILESIZE=$(stat -c%s "$FILENAME")
-printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
-```
-
-## Upload Script Generation
-
-This project includes a mix task to generate a script with a slightly more robust implementation of the above
+If you have a passphrase on your ssh key, you'll probably not want to use `mix
+firmware.push` since you need to type it in the clear. Regular commandline `ssh`
+can push firmware as well and is also desirable if you want to integrate
+firmware updates into other scripts or systems like Ansible. Here's how you
+generate a shell script with the proper ssh invocation:
 
 ```
-$ mix nerves.gen.script.upload
+mix firmware.gen.script
 ```
 
-Also see the section on the `nerves_firmware_ssh` protocol and the ssh(1) man page
-for more details.
+And then run:
+```
+./upload.sh [destination IP] [.fw file]
+```
+The destination IP and .fw file can frequently be guessed so the script
+attempts to do that for you.
+
+See the nerves_firmware_ssh protocol section below and the ssh(1) man page for
+more details.
 
 ## Troubleshooting
 
@@ -195,6 +192,18 @@ device will not be rebooted.
 The data coming back from the server is the output of the invoked commands. This
 is primarily textual output suitable for reading by humans. If automating
 updates, this output should be logged to help debug update failures if any.
+
+### Example manual invocation
+
+Use `mix firmware.gen.script` to generate a script that's portable and has a few
+workarounds for platforms. The general idea, though, is to do something like
+this:
+
+```
+FILENAME=myapp.fw
+FILESIZE=$(stat -c%s "$FILENAME")
+printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
+```
 
 # License
 
