@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.1
+
+  * Improvements
+    * Try guessing the link local interface when multiple exist on OSX. Guessing
+      the last one seems to work.
+
 ## v0.3.0
 
   * Improvements
