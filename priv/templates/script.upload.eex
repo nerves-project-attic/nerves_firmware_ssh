@@ -38,7 +38,7 @@ help() {
 [ -n "$DESTINATION" ] || DESTINATION=nerves.local
 [ -n "$MIX_TARGET" ] || MIX_TARGET=rpi0
 [ -n "$MIX_ENV" ] || MIX_ENV=dev
-[ -n "$FILENAME" ] || FILENAME=$(ls ./_build/$MIX_TARGET/$MIX_ENV/nerves/images/*.fw 2> /dev/null | head -1)
+[ -n "$FILENAME" ] || FILENAME=$(ls ./_build/$MIX_TARGET/$MIX_ENV/nerves/images/*.fw 2> /dev/null | head -n 1)
 
 [ -n "$FILENAME" ] || (echo "Error: error determining firmware bundle."; help)
 [ -f "$FILENAME" ] || (echo "Error: can't find '$FILENAME'"; help)
@@ -68,6 +68,13 @@ if [ "$(uname -s)" = "Darwin" ]; then
         echo "Can't resolve $DESTINATION"
         exit 1
     fi
+    TEST_DESTINATION_IP=$(printf "$DESTINATION_IP" | head -n 1)
+    if [ "$DESTINATION_IP" != "$TEST_DESTINATION_IP" ]; then
+        echo "Multiple destination IP addresses for $DESTINATION found:"
+        echo "$DESTINATION_IP"
+        echo "Guessing the first one..."
+        DESTINATION_IP=$TEST_DESTINATION_IP
+    fi
 
     IS_DEST_LL=$(echo $DESTINATION_IP | grep '^169\.254\.' || exit 0)
     if [ -n "$IS_DEST_LL" ]; then
@@ -75,6 +82,13 @@ if [ "$(uname -s)" = "Darwin" ]; then
         if [ -z "$LINK_LOCAL_IP" ]; then
             echo "Can't find an interface with a link local address?"
             exit 1
+        fi
+        TEST_LINK_LOCAL_IP=$(printf "$LINK_LOCAL_IP" | tail -n 1)
+        if [ "$LINK_LOCAL_IP" != "$TEST_LINK_LOCAL_IP" ]; then
+            echo "Multiple interfaces with link local addresses:"
+            echo "$LINK_LOCAL_IP"
+            echo "Guessing the last one, but YMMV..."
+            LINK_LOCAL_IP=$TEST_LINK_LOCAL_IP
         fi
 
         # If a link local address, then force ssh to bind to the link local IP
