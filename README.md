@@ -54,7 +54,7 @@ onto the device.
 The easiest way to push updates during development is to let `mix` do it for
 you:
 
-```
+```bash
 MIX_TARGET=rpi0 mix firmware.push nerves.local
 ```
 
@@ -63,11 +63,11 @@ DNS name of the device that you want to update.
 
 The `firmware.push` command takes several arguments:
 
-   * `--firmware` - The path to a fw file.
-   * `--passphrase` - The passphrase on the SSH private key (if any)
-   * `--port` - The TCP port number to use to connect to the target.
-   * `--target` - The target string of the target configuration.
-   * `--user-dir` - The path to where your id_rsa id_rsa.pub key files are located.
+* `--firmware` - The path to a fw file.
+* `--passphrase` - The passphrase on the SSH private key (if any)
+* `--port` - The TCP port number to use to connect to the target.
+* `--target` - The target string of the target configuration.
+* `--user-dir` - The path to where your id_rsa id_rsa.pub key files are located.
 
 Run `mix help firmware.push` for more information.
 
@@ -77,14 +77,16 @@ can push firmware as well and is also desirable if you want to integrate
 firmware updates into other scripts or systems like Ansible. Here's how you
 generate a shell script with the proper ssh invocation:
 
-```
+```shell
 mix firmware.gen.script
 ```
 
 And then run:
-```
+
+```shell
 ./upload.sh [destination IP] [.fw file]
 ```
+
 The destination IP and .fw file can frequently be guessed so the script
 attempts to do that for you.
 
@@ -140,7 +142,7 @@ add a rootfs-additions directory to your project (see the [Nerves
 documentation](https://hexdocs.pm/nerves/advanced-configuration.html#root-filesystem-additions)
 and run something like the following:
 
-```
+```shell
 mkdir -p rootfs-additions/etc/ssh
 ssh-keygen -t rsa -f rootfs-additions/etc/ssh/ssh_host_rsa_key
 ```
@@ -159,6 +161,7 @@ config :nerves_firmware_ssh,
   ],
   system_dir: "/mnt/device/ssh"
 ```
+
 This requires that you add a manufacturing step to your device production that
 creates a public/private key pair, writes it to your device in a hypothetical
 `/mnt/device` partition, and saves the public key portion. How to do this isn't
@@ -199,13 +202,13 @@ Use `mix firmware.gen.script` to generate a script that's portable and has a few
 workarounds for platforms. The general idea, though, is to do something like
 this:
 
-```
+```shell
 FILENAME=myapp.fw
 FILESIZE=$(stat -c%s "$FILENAME")
 printf "fwup:$FILESIZE,reboot\n" | cat - $FILENAME | ssh -s -p 8989 target_ip_addr nerves_firmware_ssh
 ```
 
-# License
+## License
 
 All source code is licensed under the
 [Apache License, 2.0](https://opensource.org/licenses/Apache-2.0).
