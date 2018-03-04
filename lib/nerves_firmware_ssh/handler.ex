@@ -136,7 +136,11 @@ defmodule Nerves.Firmware.SSH.Handler do
       {:ok, ^count} ->
         # Done
         new_state = %{
-          state | state: :wait_for_fwup, buffer: leftover, commands: rest, bytes_processed: 0
+          state
+          | state: :wait_for_fwup,
+            buffer: leftover,
+            commands: rest,
+            bytes_processed: 0
         }
 
         {:ok, new_state}
@@ -150,7 +154,11 @@ defmodule Nerves.Firmware.SSH.Handler do
         # Error - need to wait for fwup to exit so that we can
         # report back anything that it may say
         new_state = %{
-          state | state: :wait_for_fwup_error, buffer: <<>>, commands: [], bytes_processed: 0
+          state
+          | state: :wait_for_fwup_error,
+            buffer: <<>>,
+            commands: [],
+            bytes_processed: 0
         }
 
         {:ok, new_state}
