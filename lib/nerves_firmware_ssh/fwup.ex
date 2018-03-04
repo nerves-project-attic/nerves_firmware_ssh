@@ -70,6 +70,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
       else
         response
       end
+
     :ok = :ssh_channel.cast(state.cm, {:fwup_data, trimmed_response})
     {:noreply, state}
   end
@@ -92,6 +93,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
 
   defp fwup_version() do
     {version_str, 0} = System.cmd("fwup", ["--version"])
+
     version_str
     |> String.trim()
     |> Version.parse!()
