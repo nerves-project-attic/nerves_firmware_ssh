@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.2
+
+* Bug fixes
+  * Removed workaround for ERL-469 that prevented use of ssh-agent. This
+    requires Erlang >= 20.2.1 running on the target. That's been out for a while
+    in the official systems, so hopefully people have upgraded.
+
 ## v0.3.1
 
 * Improvements
