@@ -8,7 +8,7 @@ defmodule Mix.Tasks.Firmware.Gen.Script do
   def run(_) do
     Mix.shell().info("""
 
-    Generate a new custom script to use instead of `mix firmware.push`
+    Generate a new shell script for pushing firmware to devices running `nerves_firmware_ssh`.
     """)
 
     filename = determine_filename()
