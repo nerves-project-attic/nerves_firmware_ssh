@@ -3,9 +3,7 @@ defmodule Nerves.Firmware.SSH.Mixfile do
 
   @version "0.3.3"
 
-  @description """
-  Perform over-the-air updates to Nerves devices using ssh
-  """
+  @description "Perform over-the-air updates to Nerves devices using ssh"
 
   def project() do
     [
