@@ -1,44 +1,33 @@
 defmodule Mix.Tasks.Firmware.Gen.Script do
-  @shortdoc "Generates a shell script for pushing firmware updates"
-
-  @default_filename "upload.sh"
-
   use Mix.Task
 
+  @script_name "upload.sh"
+
+  @shortdoc "Generates a shell script for pushing firmware updates"
+
+  @moduledoc """
+  Creates a shell script for invoking ssh to upgrade devices with nerves_firmware_ssh.
+
+  This script may be used on its own or used as a base for more complicated
+  device software upgrade deployments.
+
+  It saves the script to #{@script_name}.
+  """
+
   def run(_) do
-    Mix.shell().info("""
+    upload_script_contents =
+      Application.app_dir(:nerves_firmware_ssh, "priv/templates/script.upload.eex")
+      |> EEx.eval_file([])
 
-    Generate a new shell script for pushing firmware to devices running `nerves_firmware_ssh`.
-    """)
-
-    filename = determine_filename()
-    priv_dir = to_string(:code.priv_dir(:nerves_firmware_ssh))
-    template = Path.join(priv_dir, "templates/script.upload.eex")
-    upload_script_contents = EEx.eval_file(template, [])
+    if File.exists?(@script_name) do
+      Mix.shell().yes?("OK to overwrite #{@script_name}?") || Mix.raise("Aborted")
+    end
 
     Mix.shell().info("""
-
-    Generating a new file named #{filename}
+    Writing #{@script_name}...
     """)
 
-    File.write(filename, "#{upload_script_contents}\n")
-
-    File.chmod!(filename, 0o755)
-  end
-
-  defp determine_filename do
-    prompt_for_filename() |> String.trim() |> apply_default_filename()
-  end
-
-  defp prompt_for_filename do
-    Mix.shell().prompt("Enter file to use for your new script (./#{@default_filename}):")
-  end
-
-  defp apply_default_filename("") do
-    @default_filename
-  end
-
-  defp apply_default_filename(filename) do
-    filename
+    File.write!(@script_name, upload_script_contents)
+    File.chmod!(@script_name, 0o755)
   end
 end
