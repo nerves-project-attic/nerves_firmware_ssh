@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Firmware.Push do
     end
 
     if length(args) != 1 do
-      Mix.raise("mix firmware.push expects a target IP address or name")
+      Mix.raise(target_ip_address_or_name_msg())
     end
 
     [ip] = args
@@ -171,5 +171,18 @@ defmodule Mix.Tasks.Firmware.Push do
       timeout ->
         wait_for_complete(connection_ref, channel_id, chunks)
     end
+  end
+
+  defp target_ip_address_or_name_msg() do
+    ~S"""
+    mix firmware.push expects a target IP address or name
+
+    If you have a name configured, you should pass in only the domain name.
+
+    Example:
+
+      Given the name is `target01@nerves.local`, you should use:
+      `mix firmware.push nerves.local`
+    """
   end
 end
