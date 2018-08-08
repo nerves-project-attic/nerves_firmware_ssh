@@ -1,7 +1,7 @@
 defmodule Nerves.Firmware.SSH.Mixfile do
   use Mix.Project
 
-  @version "0.3.2"
+  @version "0.3.3"
 
   @description """
   Perform over-the-air updates to Nerves devices using ssh
