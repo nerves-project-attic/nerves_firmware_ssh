@@ -121,6 +121,7 @@ defmodule Nerves.Firmware.SSH.Handler do
 
   defp run_commands([], _data, state) do
     :ssh_connection.send_eof(state.cm, state.id)
+    :ssh_connection.exit_status(state.cm, state.id, 0)
     {:stop, state.id, state}
   end
 
