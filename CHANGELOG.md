@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.3
+
+* Bug fixes
+  * Fixed exit code returned over ssh so that uploads could be scripted and
+    checked that they ran successfully.
+
 ## v0.3.2
 
 * Bug fixes
