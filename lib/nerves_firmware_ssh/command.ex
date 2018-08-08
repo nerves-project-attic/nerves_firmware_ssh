@@ -8,7 +8,7 @@ defmodule Nerves.Firmware.SSH.Command do
 
   Commands are comma separated and terminated by a newline.
   """
-  @spec parse(String.t()) :: {:ok, [command]} | {:error, :partial | :invalid_command}
+  @spec parse(String.t()) :: {:ok, [command], String.t()} | {:error, :partial | :invalid_command}
   def parse(data) do
     case String.split(data, "\n", parts: 2) do
       [command_string, rest] ->
@@ -31,6 +31,7 @@ defmodule Nerves.Firmware.SSH.Command do
     |> Enum.map(&parse_command/1)
   end
 
+  @spec parse_command(String.t()) :: command
   def parse_command(<<"fwup:", filesize::binary>>), do: {:fwup, String.to_integer(filesize)}
   def parse_command("reboot"), do: :reboot
   def parse_command(_data), do: :invalid
