@@ -10,6 +10,7 @@ defmodule Mix.Tasks.Firmware.Push do
   until `mix firmware.push` can be properly fixed.
   """
 
+  @spec run(keyword()) :: no_return()
   def run(_args) do
     Mix.raise("""
     Please use `mix firmware.gen.script` and run the shell script
