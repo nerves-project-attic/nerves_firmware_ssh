@@ -33,6 +33,7 @@ defmodule Nerves.Firmware.SSH.Application do
         {:id_string, :random},
         {:key_cb, {Nerves.Firmware.SSH.Keys, cb_opts}},
         {:system_dir, system_dir()},
+        {:ssh_cli, :no_cli},
         {:subsystems, [{'nerves_firmware_ssh', {Nerves.Firmware.SSH.Handler, []}}]}
       ])
   end
