@@ -5,14 +5,24 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/elixir:1.6.6
+      - image: circleci/elixir:1.7.4
     working_directory: ~/repo
-    environment:
-      MIX_ENV: test
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "mix.lock" }}
       - run: sudo apt update -qq && sudo apt install libmnl-dev -qq
-      - run: mix local.hex --force && mix local.rebar --force
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
       - run: mix deps.get --only test
       - run: mix test
+      - run: mix hex.build
+      - run: mix docs
+      - run: mix dialyzer --halt-exit-status
       - run: mix format --check-formatted
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "mix.lock" }}
+          paths:
+            - _build
+            - deps
