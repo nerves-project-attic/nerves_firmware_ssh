@@ -3,6 +3,8 @@ defmodule Nerves.Firmware.SSH.Application do
 
   use Application
 
+  @default_system_dir "/etc/ssh"
+
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
@@ -40,11 +42,24 @@ defmodule Nerves.Firmware.SSH.Application do
       system_dir = Application.get_env(:nerves_firmware_ssh, :system_dir) ->
         to_charlist(system_dir)
 
-      File.dir?("/etc/ssh") ->
-        to_charlist("/etc/ssh")
+      File.dir?(@default_system_dir) and host_keys_readable?(@default_system_dir) ->
+        to_charlist(@default_system_dir)
 
       true ->
         :code.priv_dir(:nerves_firmware_ssh)
+    end
+  end
+
+  defp host_keys_readable?(path) do
+    ["ssh_host_rsa_key", "ssh_host_dsa_key", "ssh_host_ecdsa_key"]
+    |> Enum.map(fn name -> Path.join(path, name) end)
+    |> Enum.any?(&readable?/1)
+  end
+
+  defp readable?(path) do
+    case File.read(path) do
+      {:ok, _} -> true
+      _ -> false
     end
   end
 end
