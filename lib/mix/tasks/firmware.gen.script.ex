@@ -13,8 +13,8 @@ defmodule Mix.Tasks.Firmware.Gen.Script do
 
   It saves the script to #{@script_name}.
   """
-
-  def run(_) do
+  @spec run(keyword()) :: :ok
+  def run(_args) do
     upload_script_contents =
       Application.app_dir(:nerves_firmware_ssh, "priv/templates/script.upload.eex")
       |> EEx.eval_file([])
