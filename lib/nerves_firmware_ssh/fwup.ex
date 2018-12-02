@@ -60,18 +60,25 @@ defmodule Nerves.Firmware.SSH.Fwup do
   end
 
   def handle_info({port, {:data, response}}, %{port: port} = state) do
-    trimmed_response =
-      if String.contains?(response, "\x1a") do
-        # fwup says that it's going to exit by sending a CTRL+Z (0x1a)
-        # The CTRL+Z is the very last character that will ever be
-        # received over the port, so handshake by closing the port.
-        send(port, {self(), :close})
-        String.trim_trailing(response, "\x1a")
-      else
-        response
-      end
+    # fwup says that it's going to exit by sending a CTRL+Z (0x1a)
+    case String.split(response, "\x1a", parts: 2) do
+      [response] ->
+        :ssh_channel.cast(state.cm, {:fwup_data, response})
 
-    :ok = :ssh_channel.cast(state.cm, {:fwup_data, trimmed_response})
+      [response, <<status>>] ->
+        # fwup exited with status
+        Logger.info("fwup exited with status #{status}")
+        send(port, {self(), :close})
+        :ssh_channel.cast(state.cm, {:fwup_data, response})
+        :ssh_channel.cast(state.cm, {:fwup_exit, status})
+
+      [response, other] ->
+        # fwup exited without status
+        Logger.info("fwup exited improperly: #{inspect(other)}")
+        send(port, {self(), :close})
+        :ssh_channel.cast(state.cm, {:fwup_data, response})
+    end
+
     {:noreply, state}
   end
 
