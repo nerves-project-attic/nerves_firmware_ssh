@@ -85,11 +85,11 @@ defmodule Nerves.Firmware.SSH.Handler do
   end
 
   defp process_message(:parse_commands, data, state) do
-    alldata = state.buffer <> data
+    all_data = state.buffer <> data
 
     case Command.parse(data) do
       {:error, :partial} ->
-        {:ok, %{state | buffer: alldata}}
+        {:ok, %{state | buffer: all_data}}
 
       {:error, reason} ->
         :ssh_connection.send(state.cm, state.id, "nerves_firmware_ssh: error #{reason}\n")
@@ -103,19 +103,19 @@ defmodule Nerves.Firmware.SSH.Handler do
   end
 
   defp process_message(:running_commands, data, state) do
-    alldata = state.buffer <> data
+    all_data = state.buffer <> data
     new_state = %{state | buffer: <<>>}
-    run_commands(state.commands, alldata, new_state)
+    run_commands(state.commands, all_data, new_state)
   end
 
   defp process_message(:wait_for_fwup, data, state) do
-    alldata = state.buffer <> data
-    new_state = %{state | buffer: alldata}
+    all_data = state.buffer <> data
+    new_state = %{state | buffer: all_data}
     {:ok, new_state}
   end
 
   defp process_message(:wait_for_fwup_error, _data, state) do
-    # Just disgard anything we get
+    # Just discard anything we get
     {:ok, state}
   end
 
