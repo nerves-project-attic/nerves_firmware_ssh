@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.4.0
+
+Support for `mix firmware.push` has been removed. We're all very sorry for this,
+but it appears to be unfixable. It was implemented using Erlang's built-in ssh
+client which doesn't know about things like the `ssh-agent` or the `.ssh/config`
+and can't ask for passwords. It also isn't possible to call the system's `ssh`
+since Erlang runs `setsid` on child processes so they don't have a tty.
+
+The workaround is to run `mix firmware.gen.script` and then run `./upload.sh`.
+
+* Bug fixes
+  * Fix exit code parsing from fwup so that errors can be propogated over ssh
+  * Disabled the Erlang shell and remote command execution on the firmware
+    update port
+
 ## v0.3.3
 
 * Bug fixes
