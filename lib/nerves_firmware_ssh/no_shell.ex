@@ -1,20 +1,23 @@
 defmodule Nerves.Firmware.SSH.NoShell do
-  def start_shell(user, peer) do
+  @moduledoc false
+
+  @doc """
+  Called by `:ssh.daemon` when a user requests an interactive shell.
+  """
+  @spec start_shell(charlist(), :ssh.ip_port()) :: pid()
+  def start_shell(_user, _peer) do
     spawn(fn ->
-      run(user, peer, "Interactive Login")
+      IO.puts("Interactive login unsupported. Use the nerves_firmware_ssh subsystem.")
     end)
   end
 
-  def start_exec(cmd, user, peer) do
+  @doc """
+  Called by `:ssh.daemon` when a user tries to run a remote command.
+  """
+  @spec start_exec(charlist(), charlist(), :ssh.ip_port()) :: pid()
+  def start_exec(_cmd, _user, _peer) do
     spawn(fn ->
-      run(user, peer, "Command Execution (#{cmd})")
+      IO.puts("Command execution unsupported.")
     end)
-  end
-
-  def run(user, peer = {ip, _port}, feature) do
-    """
-    Sorry #{inspect(user)} from #{:inet.ntoa(ip)}, Nerves Firmware SSH does not support #{feature}
-    """
-    |> IO.puts()
   end
 end
