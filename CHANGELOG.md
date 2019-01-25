@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.1
+
+* Improvements
+  * Updated upload.sh script to support Elixir 1.8 changes to output paths
+
 ## v0.4.0
 
 Support for `mix firmware.push` has been removed. We're all very sorry for this,
