@@ -31,14 +31,29 @@ help() {
     echo "upload.sh [destination IP] [Path to .fw file]"
     echo
     echo "Default destination IP is 'nerves.local'"
-    echo "Default firmware bundle is the first .fw file in '_build/\$MIX_TARGET/\$MIX_ENV/nerves/images'"
+    echo "Default firmware bundle is the first .fw file in '_build/\${MIX_TARGET}_\${MIX_ENV}/nerves/images'"
+    echo
+    echo "MIX_TARGET=$MIX_TARGET"
+    echo "MIX_ENV=$MIX_ENV"
     exit 1
 }
 
 [ -n "$DESTINATION" ] || DESTINATION=nerves.local
 [ -n "$MIX_TARGET" ] || MIX_TARGET=rpi0
 [ -n "$MIX_ENV" ] || MIX_ENV=dev
-[ -n "$FILENAME" ] || FILENAME=$(ls ./_build/$MIX_TARGET/$MIX_ENV/nerves/images/*.fw 2> /dev/null | head -n 1)
+if [ -z "$FILENAME" ]; then
+    FIRMWARE_PATH="./_build/${MIX_TARGET}_${MIX_ENV}/nerves/images"
+    if [ ! -d "$FIRMWARE_PATH" ]; then
+        # Try the pre-Nerves 1.4 path
+        FIRMWARE_PATH="./_build/${MIX_TARGET}/${MIX_ENV}/nerves/images"
+        if [ ! -d "$FIRMWARE_PATH" ]; then
+            echo "Can't find the build products. Specify path to .fw file or try running 'mix firmware'"
+            exit 1
+        fi
+    fi
+
+    FILENAME=$(ls "$FIRMWARE_PATH/"*.fw 2> /dev/null | head -n 1)
+fi
 
 [ -n "$FILENAME" ] || (echo "Error: error determining firmware bundle."; help)
 [ -f "$FILENAME" ] || (echo "Error: can't find '$FILENAME'"; help)
