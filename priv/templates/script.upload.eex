@@ -44,11 +44,15 @@ help() {
 if [ -z "$FILENAME" ]; then
     FIRMWARE_PATH="./_build/${MIX_TARGET}_${MIX_ENV}/nerves/images"
     if [ ! -d "$FIRMWARE_PATH" ]; then
-        # Try the pre-Nerves 1.4 path
-        FIRMWARE_PATH="./_build/${MIX_TARGET}/${MIX_ENV}/nerves/images"
+        # Try the Nerves 1.4 path if the user hasn't upgraded their mix.exs
+        FIRMWARE_PATH="./_build/${MIX_TARGET}/${MIX_TARGET}_${MIX_ENV}/nerves/images"
         if [ ! -d "$FIRMWARE_PATH" ]; then
-            echo "Can't find the build products. Specify path to .fw file or try running 'mix firmware'"
-            exit 1
+            # Try the pre-Nerves 1.4 path
+            FIRMWARE_PATH="./_build/${MIX_TARGET}/${MIX_ENV}/nerves/images"
+            if [ ! -d "$FIRMWARE_PATH" ]; then
+                echo "Can't find the build products. Specify path to .fw file or try running 'mix firmware'"
+                exit 1
+            fi
         fi
     fi
 
