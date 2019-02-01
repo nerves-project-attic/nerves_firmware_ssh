@@ -5,6 +5,20 @@ defmodule Nerves.Firmware.SSH.Application do
 
   @default_system_dir "/etc/ssh"
 
+  # Check the keys passed in via application env.
+  compile_time_keys = Application.get_env(:nerves_firmware_ssh, :authorized_keys, [])
+
+  for key <- compile_time_keys do
+    try do
+      :pubkey_ssh.decode(key, :public_key)
+    catch
+      _, _ ->
+        Mix.raise("""
+        authorized_key provided in config.exs application env is not a valid SSH key!
+        """)
+    end
+  end
+
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
