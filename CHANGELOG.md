@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.2
+
+* Improvements
+  * Validate authorized ssh keys to avoid accidents that prevent firmware
+    updates
+  * Print out firmware metadata when uploading
+
 ## v0.4.1
 
 * Improvements
