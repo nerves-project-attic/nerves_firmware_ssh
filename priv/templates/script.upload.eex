@@ -18,7 +18,7 @@
 #
 # The firmware update protocol is:
 #
-# 1. Connect to the the nerves_firmware_ssh service running on port 8989
+# 1. Connect to the nerves_firmware_ssh service running on port 8989
 # 2. Send "fwup:$FILESIZE,reboot\n" where `$FILESIZE` is the size of the file
 #    being uploaded
 # 3. Send the firmware file
