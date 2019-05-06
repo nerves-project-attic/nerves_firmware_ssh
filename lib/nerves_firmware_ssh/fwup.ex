@@ -52,7 +52,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
         :ok
       rescue
         ArgumentError ->
-          Logger.info("Port.command ArgumentError race condition detected and handled")
+          _ = Logger.info("Port.command ArgumentError race condition detected and handled")
           :error
       end
 
@@ -67,14 +67,14 @@ defmodule Nerves.Firmware.SSH.Fwup do
 
       [response, <<status>>] ->
         # fwup exited with status
-        Logger.info("fwup exited with status #{status}")
+        _ = Logger.info("fwup exited with status #{status}")
         send(port, {self(), :close})
         :ssh_channel.cast(state.cm, {:fwup_data, response})
         :ssh_channel.cast(state.cm, {:fwup_exit, status})
 
       [response, other] ->
         # fwup exited without status
-        Logger.info("fwup exited improperly: #{inspect(other)}")
+        _ = Logger.info("fwup exited improperly: #{inspect(other)}")
         send(port, {self(), :close})
         :ssh_channel.cast(state.cm, {:fwup_data, response})
     end
@@ -83,13 +83,13 @@ defmodule Nerves.Firmware.SSH.Fwup do
   end
 
   def handle_info({port, {:exit_status, status}}, %{port: port} = state) do
-    Logger.info("fwup exited with status #{status} without handshaking")
+    _ = Logger.info("fwup exited with status #{status} without handshaking")
     :ssh_channel.cast(state.cm, {:fwup_exit, status})
     {:noreply, %{state | port: nil}}
   end
 
   def handle_info({port, :closed}, %{port: port} = state) do
-    Logger.info("fwup port was closed")
+    _ = Logger.info("fwup port was closed")
     :ssh_channel.cast(state.cm, {:fwup_exit, 0})
     {:noreply, %{state | port: nil}}
   end
