@@ -1,4 +1,4 @@
-defmodule Nerves.Firmware.SSH.Mixfile do
+defmodule Nerves.Firmware.SSH.MixProject do
   use Mix.Project
 
   @version "0.4.2"
@@ -11,7 +11,7 @@ defmodule Nerves.Firmware.SSH.Mixfile do
       version: @version,
       description: @description,
       package: package(),
-      elixir: "~> 1.4",
+      elixir: "~> 1.6",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
