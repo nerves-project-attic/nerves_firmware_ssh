@@ -38,7 +38,6 @@ defmodule Nerves.Firmware.SSH.MixProject do
 
   defp package() do
     [
-      maintainers: ["Frank Hunleth"],
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/nerves-project/nerves_firmware_ssh"}
     ]
