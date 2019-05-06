@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.3
+
+* Improvements
+  * Minor project cleanup. No functional changes.
+
 ## v0.4.2
 
 * Improvements
