@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.4
+
+* Bug fixes
+  * fwup is now stopped immediately when the ssh connection closes prematurely.
+    This cancels any existing firmware update. Thanks to Troels Brødsgaard for
+    this fix.
+
 ## v0.4.3
 
 * Improvements
