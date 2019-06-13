@@ -95,7 +95,9 @@ defmodule Nerves.Firmware.SSH.Fwup do
     {:noreply, %{state | port: nil}}
   end
 
-  def handle_info({:DOWN, _, :process, cm, reason}, %{cm: cm} = state) do
+  def handle_info({:DOWN, _, :process, cm, reason}, %{cm: cm, port: port} = state) do
+    _ = Logger.info("firmware ssh handler exited before fwup could finish")
+    send(port, {self(), :close})
     {:stop, :normal, state}
   end
 
