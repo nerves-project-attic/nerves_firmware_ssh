@@ -61,7 +61,7 @@ defmodule Nerves.Firmware.SSH.Handler do
   def handle_cast({:fwup_data, response}, state) do
     case :ssh_connection.send(state.cm, state.id, response) do
       :ok -> {:noreply, state}
-      {:error, reason} -> {:stop, reason}
+      {:error, reason} -> {:stop, reason, state}
     end
   end
 
