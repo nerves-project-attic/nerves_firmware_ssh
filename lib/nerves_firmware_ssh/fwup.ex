@@ -13,6 +13,7 @@ defmodule Nerves.Firmware.SSH.Fwup do
   end
 
   def init([cm]) do
+    Process.monitor(cm)
     fwup = System.find_executable("fwup")
     devpath = Nerves.Runtime.KV.get("nerves_fw_devpath") || "/dev/mmcblk0"
     task = "upgrade"
@@ -92,6 +93,10 @@ defmodule Nerves.Firmware.SSH.Fwup do
     _ = Logger.info("fwup port was closed")
     :ssh_channel.cast(state.cm, {:fwup_exit, 0})
     {:noreply, %{state | port: nil}}
+  end
+
+  def handle_info({:DOWN, _, :process, cm, reason}, %{cm: cm} = state) do
+    {:stop, :normal, state}
   end
 
   defp supports_handshake() do
