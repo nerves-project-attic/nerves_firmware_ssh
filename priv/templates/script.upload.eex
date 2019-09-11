@@ -27,7 +27,7 @@
 # 5. The ssh connection is closed with an exit code to indicate success or
 #    failure
 #
-# Feel free to copy this script whereever is convenient. The template is at
+# Feel free to copy this script wherever is convenient. The template is at
 # https://github.com/nerves-project/nerves_firmware_ssh/blob/master/priv/templates/script.upload.eex
 #
 
