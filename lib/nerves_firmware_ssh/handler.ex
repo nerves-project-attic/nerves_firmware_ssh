@@ -172,7 +172,7 @@ defmodule Nerves.Firmware.SSH.Handler do
 
     # Run the reboot in another process so that this one can completely and
     # nicely shut down the ssh connection.
-    spawn(fn -> Nerves.Runtime.reboot() end)
+    spawn(&Nerves.Runtime.reboot/0)
 
     new_state = %{state | commands: rest}
     run_commands(rest, data, new_state)
