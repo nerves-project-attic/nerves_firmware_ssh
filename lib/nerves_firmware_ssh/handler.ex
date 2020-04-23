@@ -169,7 +169,10 @@ defmodule Nerves.Firmware.SSH.Handler do
   defp run_commands([:reboot | rest], data, state) do
     _ = Logger.debug("nerves_firmware_ssh: rebooting...")
     :ssh_connection.send(state.cm, state.id, "Rebooting...\n")
-    Nerves.Runtime.reboot()
+
+    # Run the reboot in another process so that this one can completely and
+    # nicely shut down the ssh connection.
+    spawn(fn -> Nerves.Runtime.reboot() end)
 
     new_state = %{state | commands: rest}
     run_commands(rest, data, new_state)
