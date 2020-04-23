@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.5
+
+* Bug fixes
+  * Fix issue causing ssh to hang at the end of a successful firmware update.
+    Now the socket is properly closed before the reboot.
+
 ## v0.4.4
 
 * Bug fixes
