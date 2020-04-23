@@ -35,7 +35,7 @@ defmodule Nerves.Firmware.SSH.MixProject do
     [
       {:nerves_runtime, "~> 0.6"},
       {:ex_doc, "~> 0.19", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false}
+      {:dialyxir, "~> 1.0.0", only: :dev, runtime: false}
     ]
   end
 
