@@ -52,6 +52,22 @@ onto the device.
 
 ## Pushing firmware updates to devices
 
+This project provides a `mix` task for updating devices. Here's an example:
+
+```shell
+mix upload [destination IP or hostname]
+```
+
+This task uses the current `mix` target and environment settings to find the
+firmware bundle (`.fw` file) to upload. It does not build it, so you will need
+to run `mix firmware` first.
+
+The `upload` task has some limitations especially if `ssh` requires credentials.
+If this task doesn't work for you, see the next section for
+creating a shell script with the equivalent commands.
+
+## Pushing firmware updates to devices via commandline ssh
+
 Regular commandline `ssh` can push firmware to devices and is desirable if you
 want to integrate firmware updates into other scripts or programs like Ansible.
 To get started, run `mix` to generate a starter shell script with the ssh
