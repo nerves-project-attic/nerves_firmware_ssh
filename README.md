@@ -1,6 +1,6 @@
 # Nerves.Firmware.SSH
 
-[![CircleCI](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/master.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/master)
+[![CircleCI](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/main.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/main)
 [![Hex version](https://img.shields.io/hexpm/v/nerves_firmware_ssh.svg "Hex version")](https://hex.pm/packages/nerves_firmware_ssh)
 
 This project contains the necessary infrastruction to support "over-the-air"
