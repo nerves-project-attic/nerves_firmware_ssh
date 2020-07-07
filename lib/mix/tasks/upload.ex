@@ -157,6 +157,9 @@ defmodule Mix.Tasks.Upload do
       {^port, {:exit_status, status}} ->
         Mix.raise("ssh failed with status #{status}")
 
+      {:EXIT, _, :normal} ->
+        port_read(port)
+
       {:EXIT, ^port, reason} ->
         Mix.raise("""
         Unexpected exit from ssh (#{inspect(reason)})
