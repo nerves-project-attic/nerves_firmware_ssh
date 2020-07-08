@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.6
+
+* New features
+  * Added `mix upload` task for Nerves users who prefer idiomatic Elixir ways of
+    uploading to devices. This task has some limitations especially when
+    ssh needs to ask for passwords. The `mix firmware.gen.script` /
+    `./upload.sh` approach still exists.
+
 ## v0.4.5
 
 * Bug fixes
