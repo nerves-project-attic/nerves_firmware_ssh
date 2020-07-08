@@ -2,6 +2,7 @@ defmodule Nerves.Firmware.SSH.MixProject do
   use Mix.Project
 
   @version "0.4.5"
+  @source_url "https://github.com/nerves-project/nerves_firmware_ssh"
 
   @description "Perform over-the-air updates to Nerves devices using ssh"
 
@@ -19,7 +20,12 @@ defmodule Nerves.Firmware.SSH.MixProject do
       dialyzer: [
         flags: [:error_handling, :race_conditions, :underspecs],
         plt_add_apps: [:mix, :eex]
-      ]
+      ],
+      preferred_cli_env: %{
+        docs: :docs,
+        "hex.publish": :docs,
+        "hex.build": :docs
+      }
     ]
   end
 
@@ -28,13 +34,19 @@ defmodule Nerves.Firmware.SSH.MixProject do
   end
 
   defp docs() do
-    [main: "readme", extras: ["README.md"]]
+    [
+      extras: ["README.md", "CHANGELOG.md"],
+      main: "readme",
+      source_ref: "v#{@version}",
+      source_url: @source_url,
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
+    ]
   end
 
   defp deps() do
     [
       {:nerves_runtime, "~> 0.6"},
-      {:ex_doc, "~> 0.19", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.22", only: :docs, runtime: false},
       {:dialyxir, "~> 1.0.0", only: :dev, runtime: false}
     ]
   end
@@ -42,7 +54,7 @@ defmodule Nerves.Firmware.SSH.MixProject do
   defp package() do
     [
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/nerves-project/nerves_firmware_ssh"}
+      links: %{"GitHub" => @source_url}
     ]
   end
 end
