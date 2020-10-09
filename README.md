@@ -18,7 +18,7 @@ First, add `nerves_firmware_ssh` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:nerves_firmware_ssh, "~> 0.3"}]
+  [{:nerves_firmware_ssh, "~> 0.4"}]
 end
 ```
 
