@@ -14,6 +14,9 @@ set of devices all at once.
 
 ## Installation
 
+> NOTE: If you created your project with `mix nerves.new` then
+> nerves_firmware_ssh is already installed and configured
+
 First, add `nerves_firmware_ssh` to your list of dependencies in `mix.exs`:
 
 ```elixir
