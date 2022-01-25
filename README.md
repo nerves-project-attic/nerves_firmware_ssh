@@ -1,4 +1,17 @@
-# Nerves.Firmware.SSH
+# Nerves.Firmware.SSH [DEPRECATED]
+
+> IMPORTANT: This package is no longer maintained and should not be used in new projects.
+> 
+> This has bee replaced by [`ssh_subsystem_fwup`](https://github.com/nerves-project/ssh_subsystem_fwup) in use
+> with [`nerves_ssh`](https://github.com/nerves-project/nerves_ssh)
+> 
+> If you need to implement your own update mechanism, see [`nerves_ssh`](https://github.com/nerves-project/nerves_ssh)
+> for creating a subsystem to help do so
+> 
+> Why did we change this? SSH on Nerves devices needed a complete overhaul for connection reliability.
+> Utilizing subsystems allowed us to separate concerns of SSH behavior and provide an easier way
+> for others to contribute extra pieces they might need
+
 
 [![CircleCI](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/main.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_firmware_ssh/tree/main)
 [![Hex version](https://img.shields.io/hexpm/v/nerves_firmware_ssh.svg "Hex version")](https://hex.pm/packages/nerves_firmware_ssh)
