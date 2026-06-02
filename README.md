@@ -151,7 +151,7 @@ command prompt), you'll likely want to use the same keys for both services. If
 the `/etc/ssh` directory exists in the device's root filesystem,
 `nerves_system_ssh` will automatically use keys from there. To generate them,
 add a rootfs-additions directory to your project (see the [Nerves
-documentation](https://hexdocs.pm/nerves/advanced-configuration.html#root-filesystem-additions)
+documentation](https://nerves.hexdocs.pm/advanced-configuration.html#root-filesystem-additions)
 and run something like the following:
 
 ```shell
